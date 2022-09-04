@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.petshop.mapper.ShopInfoMapper">
+
+    <resultMap type="ShopInfo" id="ShopInfoResult">
+        <result property="id"    column="id"    />
+        <result property="shopName"    column="shop_name"    />
+        <result property="shopImg"    column="shop_img"    />
+        <result property="shopStar"    column="shop_star"    />
+        <result property="shopProvince"    column="shop_province"    />
+        <result property="shopCity"    column="shop_city"    />
+        <result property="shopStreet"    column="shop_street"    />
+    </resultMap>
+
+    <sql id="selectShopInfoVo">
+        select id, shop_name, shop_img, shop_star, shop_province, shop_city, shop_street from shop_info
+    </sql>
+
+    <select id="selectShopInfoList" parameterType="ShopInfo" resultMap="ShopInfoResult">
+        <include refid="selectShopInfoVo"/>
+        <where>
+            <if test="shopName != null  and shopName != ''"> and shop_name like concat('%', #{shopName}, '%')</if>
+            <if test="shopImg != null  and shopImg != ''"> and shop_img = #{shopImg}</if>
+            <if test="shopStar != null "> and shop_star = #{shopStar}</if>
+            <if test="shopProvince != null  and shopProvince != ''"> and shop_province = #{shopProvince}</if>
+            <if test="shopCity != null  and shopCity != ''"> and shop_city = #{shopCity}</if>
+            <if test="shopStreet != null  and shopStreet != ''"> and shop_street = #{shopStreet}</if>
+        </where>
+    </select>
+
+    <select id="selectShopInfoById" parameterType="Long" resultMap="ShopInfoResult">
+        <include refid="selectShopInfoVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertShopInfo" parameterType="ShopInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into shop_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="shopName != null">shop_name,</if>
+            <if test="shopImg != null">shop_img,</if>
+            <if test="shopStar != null">shop_star,</if>
+            <if test="shopProvince != null">shop_province,</if>
+            <if test="shopCity != null">shop_city,</if>
+            <if test="shopStreet != null">shop_street,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="shopName != null">#{shopName},</if>
+            <if test="shopImg != null">#{shopImg},</if>
+            <if test="shopStar != null">#{shopStar},</if>
+            <if test="shopProvince != null">#{shopProvince},</if>
+            <if test="shopCity != null">#{shopCity},</if>
+            <if test="shopStreet != null">#{shopStreet},</if>
+         </trim>
+    </insert>
+
+    <update id="updateShopInfo" parameterType="ShopInfo">
+        update shop_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="shopName != null">shop_name = #{shopName},</if>
+            <if test="shopImg != null">shop_img = #{shopImg},</if>
+            <if test="shopStar != null">shop_star = #{shopStar},</if>
+            <if test="shopProvince != null">shop_province = #{shopProvince},</if>
+            <if test="shopCity != null">shop_city = #{shopCity},</if>
+            <if test="shopStreet != null">shop_street = #{shopStreet},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteShopInfoById" parameterType="Long">
+        delete from shop_info where id = #{id}
+    </delete>
+
+    <delete id="deleteShopInfoByIds" parameterType="String">
+        delete from shop_info where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
