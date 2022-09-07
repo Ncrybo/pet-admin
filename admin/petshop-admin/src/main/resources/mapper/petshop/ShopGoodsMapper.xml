@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.petshop.mapper.ShopGoodsMapper">
+    
+    <resultMap type="ShopGoods" id="ShopGoodsResult">
+        <result property="id"    column="id"    />
+        <result property="goodsName"    column="goods_name"    />
+        <result property="shopName"    column="shop_name"    />
+        <result property="img"    column="img"    />
+        <result property="price"    column="price"    />
+        <result property="describes"    column="describes"    />
+        <result property="amount"    column="amount"    />
+        <result property="type"    column="type"    />
+    </resultMap>
+
+    <sql id="selectShopGoodsVo">
+        select id, goods_name, shop_name, img, price, describes, amount, type from shop_goods
+    </sql>
+
+    <select id="selectShopGoodsList" parameterType="ShopGoods" resultMap="ShopGoodsResult">
+        <include refid="selectShopGoodsVo"/>
+        <where>  
+            <if test="goodsName != null  and goodsName != ''"> and goods_name like concat('%', #{goodsName}, '%')</if>
+            <if test="shopName != null  and shopName != ''"> and shop_name like concat('%', #{shopName}, '%')</if>
+            <if test="type != null "> and type = #{type}</if>
+        </where>
+    </select>
+    
+    <select id="selectShopGoodsById" parameterType="Long" resultMap="ShopGoodsResult">
+        <include refid="selectShopGoodsVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertShopGoods" parameterType="ShopGoods" useGeneratedKeys="true" keyProperty="id">
+        insert into shop_goods
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="goodsName != null and goodsName != ''">goods_name,</if>
+            <if test="shopName != null">shop_name,</if>
+            <if test="img != null">img,</if>
+            <if test="price != null">price,</if>
+            <if test="describes != null">describes,</if>
+            <if test="amount != null">amount,</if>
+            <if test="type != null">type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="goodsName != null and goodsName != ''">#{goodsName},</if>
+            <if test="shopName != null">#{shopName},</if>
+            <if test="img != null">#{img},</if>
+            <if test="price != null">#{price},</if>
+            <if test="describes != null">#{describes},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="type != null">#{type},</if>
+         </trim>
+    </insert>
+
+    <update id="updateShopGoods" parameterType="ShopGoods">
+        update shop_goods
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="goodsName != null and goodsName != ''">goods_name = #{goodsName},</if>
+            <if test="shopName != null">shop_name = #{shopName},</if>
+            <if test="img != null">img = #{img},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="describes != null">describes = #{describes},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="type != null">type = #{type},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteShopGoodsById" parameterType="Long">
+        delete from shop_goods where id = #{id}
+    </delete>
+
+    <delete id="deleteShopGoodsByIds" parameterType="String">
+        delete from shop_goods where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
