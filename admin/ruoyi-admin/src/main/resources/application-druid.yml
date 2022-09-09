@@ -7,7 +7,7 @@ spring:
             # 主库数据源
             master:
                 url: jdbc:mysql://121.4.172.43:3306/ry-vue?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
-                username: pet
+                username: machine
                 password: 123456
             # 从库数据源
             slave:
