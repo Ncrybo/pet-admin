@@ -23,7 +23,7 @@ jobs:
         working-directory: ./admin-ui
       # 打包
       - name: 打包前端
-        run: npm run build
+        run: npm run build:prod
         working-directory: ./admin-ui
       - name: ssh连接服务器并上传文件
         # You may pin to the exact commit or the version.
@@ -59,7 +59,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: 打包maven
-        run: mvn -B package --file pom.xml
+        run: mvn -B package --file pom.xml -Dmaven.test.skip=true
       - name: ssh连接服务器并上传文件
         uses: easingthemes/ssh-deploy@v2.2.11
         with:
