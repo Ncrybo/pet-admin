@@ -1,0 +1,92 @@
+name: 打包应用并上传腾讯云
+on:
+    push:
+        branches:
+            - main
+jobs:
+  build_ui:
+    # runs-on 指定job任务运行所需要的虚拟机环境(必填字段)
+    runs-on: ubuntu-latest
+    steps:
+      # 获取源码
+      - name: 迁出代码
+        # 使用action库  actions/checkout获取源码
+        uses: actions/checkout@main
+      # 安装Node10
+      - name: 安装node.js
+        # 使用action库  actions/setup-node安装node
+        uses: actions/setup-node@v1
+        with:
+            node-version: 16.15.0
+      - name: 安装依赖
+        run: npm install
+        working-directory: ./admin-ui
+      # 打包
+      - name: 打包前端
+        run: npm run build
+        working-directory: ./admin-ui
+      - name: ssh连接服务器并上传文件
+        # You may pin to the exact commit or the version.
+        # uses: easingthemes/ssh-deploy@c711f2c3391cac2876bf4c833590077f02e4bcb8
+        uses: easingthemes/ssh-deploy@v2.2.11
+        with:
+          # Private Key
+          SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          # Remote host
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          # Remote user
+          REMOTE_USER: 'root'
+          # Remote port
+          REMOTE_PORT: 22
+          # Source directory
+          SOURCE: 'admin-ui/dist/'
+          # Target directory
+          TARGET: '/www/pet_admin'
+  build_back:
+    name: 打包后端
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./admin/ruoyi-admin
+    steps:
+      - name: 签出代码
+        uses: actions/checkout@main
+      - name: 安装JDK
+        uses: actions/setup-java@v3.4.1
+        with: 
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+      - name: 打包maven
+        run: mvn -B package --file pom.xml
+      - name: ssh连接服务器并上传文件
+        uses: easingthemes/ssh-deploy@v2.2.11
+        with:
+          # Private Key
+          SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          # Remote host
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          # Remote user
+          REMOTE_USER: 'root'
+          # Remote port
+          REMOTE_PORT: 22
+          # Source directory
+          SOURCE: 'target/ruoyi-admin.jar'
+          # Target directory
+          TARGET: '/www/pet_admin'
+      
+  # run_jar:
+  #   name: 执行jar包
+  #   # needs: build_back
+  #   runs-on: [self-hosted, Linux, x64]
+  #   defaults:
+  #     run:
+  #       shell: bash
+  #       working-directory: /www/pet
+
+  #   steps:
+  #     - name: 运行shell脚本
+  #       run: ./run_back
+  #     - name: 环境
+  #       run: systemctl status nginx
