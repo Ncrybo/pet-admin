@@ -12,15 +12,22 @@ jobs:
       - name: 迁出代码
         # 使用action库  actions/checkout获取源码
         uses: actions/checkout@main
+
       # 安装Node10
       - name: 安装node.js
         # 使用action库  actions/setup-node安装node
         uses: actions/setup-node@v1
         with:
             node-version: 16.15.0
+
       - name: 安装依赖
         run: npm install
         working-directory: ./admin-ui
+
+      - name: 安装 caniuse-lite
+        run: npm i caniuse-lite
+        working-directory: ./admin-ui
+
       # 打包
       - name: 打包前端
         run: npm run build:prod
@@ -42,13 +49,14 @@ jobs:
           SOURCE: 'admin-ui/dist/'
           # Target directory
           TARGET: '/www/pet_admin'
+
   build_back:
     name: 打包后端
     runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
-        working-directory: ./admin/ruoyi-admin
+        working-directory: ./admin
     steps:
       - name: 签出代码
         uses: actions/checkout@main
