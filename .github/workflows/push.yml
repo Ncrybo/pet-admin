@@ -48,7 +48,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ./admin/ruoyi-admin
+        working-directory: ./admin
     steps:
       - name: 签出代码
         uses: actions/checkout@main
@@ -89,4 +89,5 @@ jobs:
   #     - name: 运行shell脚本
   #       run: ./run_back
   #     - name: 环境
+
   #       run: systemctl status nginx
