@@ -51,7 +51,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ./admin/ruoyi-admin
+        working-directory: ./admin
     steps:
       - name: 签出代码
         uses: actions/checkout@main
@@ -81,7 +81,7 @@ jobs:
           # Remote port
           REMOTE_PORT: 22
           # Source directory
-          SOURCE: 'target/ruoyi-admin.jar'
+          SOURCE: 'ruoyi-generator/target/ruoyi-generator-3.8.3.jar'
           # Target directory
           TARGET: '/www/pet_admin'
       
