@@ -63,11 +63,12 @@ jobs:
           cache: maven
 
       - name: 打包父工程
-        run: mvn clean package -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+        run: mvn clean package install  -Dmaven.test.skip=true -U
         working-directory: ./admin
 
-      - name: 打包ruoyi-admin
-        run: mvn clean package -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+      # - name: 打包ruoyi-admin
+      #   run: mvn clean package install  -Dmaven.test.skip=true -U
+
       - name: ssh连接服务器并上传文件
         uses: easingthemes/ssh-deploy@v2.2.11
         with:
