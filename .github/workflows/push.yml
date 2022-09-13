@@ -51,7 +51,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ./admin
+        working-directory: ./admin/ruoyi-admin
     steps:
       - name: 签出代码
         uses: actions/checkout@main
