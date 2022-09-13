@@ -61,7 +61,12 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
           cache: maven
-      - name: 打包maven
+
+      - name: 打包父工程
+        run: mvn -B package --file pom.xml
+        working-directory: ./admin/ruoyi-admin
+
+      - name: 打包ruoyi-admin
         run: mvn -B package --file pom.xml
       - name: ssh连接服务器并上传文件
         uses: easingthemes/ssh-deploy@v2.2.11
