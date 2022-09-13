@@ -63,26 +63,26 @@ jobs:
           cache: maven
 
       - name: 打包父工程
-        run: mvn -B package --file pom.xml
+        run: mvn clean package -DskipTests=true -Dmaven.javadoc.skip=true -B -V
         working-directory: ./admin
 
-      # - name: 打包ruoyi-admin
-      #   run: mvn -B package --file pom.xml
-      # - name: ssh连接服务器并上传文件
-      #   uses: easingthemes/ssh-deploy@v2.2.11
-      #   with:
-      #     # Private Key
-      #     SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-      #     # Remote host
-      #     REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-      #     # Remote user
-      #     REMOTE_USER: 'root'
-      #     # Remote port
-      #     REMOTE_PORT: 22
-      #     # Source directory
-      #     SOURCE: 'target/ruoyi-admin.jar'
-      #     # Target directory
-      #     TARGET: '/www/pet_admin'
+      - name: 打包ruoyi-admin
+        run: mvn clean package -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+      - name: ssh连接服务器并上传文件
+        uses: easingthemes/ssh-deploy@v2.2.11
+        with:
+          # Private Key
+          SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          # Remote host
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          # Remote user
+          REMOTE_USER: 'root'
+          # Remote port
+          REMOTE_PORT: 22
+          # Source directory
+          SOURCE: 'target/ruoyi-admin.jar'
+          # Target directory
+          TARGET: '/www/pet_admin'
       
   # run_jar:
   #   name: 执行jar包
