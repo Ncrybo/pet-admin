@@ -66,8 +66,8 @@ jobs:
         run: mvn clean package install  -Dmaven.test.skip=true -U
         working-directory: ./admin
 
-      # - name: 打包ruoyi-admin
-      #   run: mvn clean package install  -Dmaven.test.skip=true -U
+      - name: 打包ruoyi-admin
+        run: mvn clean package install  -Dmaven.test.skip=true -U
 
       - name: ssh连接服务器并上传文件
         uses: easingthemes/ssh-deploy@v2.2.11
@@ -81,7 +81,7 @@ jobs:
           # Remote port
           REMOTE_PORT: 22
           # Source directory
-          SOURCE: 'admin/ruoyi-generator/target/ruoyi-generator-3.8.3.jar'
+          SOURCE: 'admin/ruoyi-admin/target/ruoyi-admin.jar'
           # Target directory
           TARGET: '/www/pet_admin'
       
