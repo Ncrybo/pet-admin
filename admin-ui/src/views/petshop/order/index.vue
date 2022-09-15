@@ -9,6 +9,14 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="商品id" prop="goodsId">
+        <el-input
+          v-model="queryParams.goodsId"
+          placeholder="请输入商品id"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
       <el-form-item label="订单状态" prop="status">
         <el-select v-model="queryParams.status" placeholder="请选择订单状态" clearable>
           <el-option
@@ -19,42 +27,10 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="商品数量" prop="productCount">
-        <el-input
-          v-model="queryParams.productCount"
-          placeholder="请输入商品数量"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="总价" prop="totalPrice">
-        <el-input
-          v-model="queryParams.totalPrice"
-          placeholder="请输入总价"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="收货地址" prop="addressId">
-        <el-input
-          v-model="queryParams.addressId"
-          placeholder="请输入收货地址"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item label="用户ID" prop="userId">
         <el-input
           v-model="queryParams.userId"
-          placeholder="请输入下单用户ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="商品id" prop="goodsId">
-        <el-input
-          v-model="queryParams.goodsId"
-          placeholder="请输入下单商品id"
+          placeholder="请输入用户ID"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -121,23 +97,24 @@
 
     <el-table v-loading="loading" :data="orderList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="主键id" align="center" prop="id" />
+      <!-- <el-table-column label="主键id" align="center" prop="id" /> -->
       <el-table-column label="订单编号" align="center" prop="orderNo" />
+      <el-table-column label="商品id" align="center" prop="goodsId" />
       <el-table-column label="订单状态" align="center" prop="status">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.shop_order_status" :value="scope.row.status"/>
         </template>
       </el-table-column>
       <el-table-column label="商品数量" align="center" prop="productCount" />
-      <el-table-column label="总价" align="center" prop="totalPrice" />
+      <el-table-column label="商品总价" align="center" prop="totalPrice" />
       <el-table-column label="收货地址" align="center" prop="addressId" />
       <el-table-column label="用户ID" align="center" prop="userId" />
-      <el-table-column label="商品id" align="center" prop="goodsId" />
       <el-table-column label="下单时间" align="center" prop="orderTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.orderTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="退单理由" align="center" prop="reason" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -166,11 +143,11 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改order对话框 -->
+    <!-- 添加或修改订单对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="订单编号" prop="orderNo">
-          <el-input v-model="form.orderNo" placeholder="请输入订单编号" />
+        <el-form-item label="商品id" prop="goodsId">
+          <el-input v-model="form.goodsId" placeholder="请输入商品id" />
         </el-form-item>
         <el-form-item label="订单状态">
           <el-radio-group v-model="form.status">
@@ -184,17 +161,14 @@
         <el-form-item label="商品数量" prop="productCount">
           <el-input v-model="form.productCount" placeholder="请输入商品数量" />
         </el-form-item>
-        <el-form-item label="总价" prop="totalPrice">
-          <el-input v-model="form.totalPrice" placeholder="请输入总价" />
+        <el-form-item label="商品总价" prop="totalPrice">
+          <el-input v-model="form.totalPrice" placeholder="请输入商品总价" />
         </el-form-item>
         <el-form-item label="收货地址" prop="addressId">
           <el-input v-model="form.addressId" placeholder="请输入收货地址" />
         </el-form-item>
         <el-form-item label="用户ID" prop="userId">
-          <el-input v-model="form.userId" placeholder="请输入下单用户ID" />
-        </el-form-item>
-        <el-form-item label="商品id" prop="goodsId">
-          <el-input v-model="form.goodsId" placeholder="请输入下单商品id" />
+          <el-input v-model="form.userId" placeholder="请输入用户ID" />
         </el-form-item>
         <el-form-item label="下单时间" prop="orderTime">
           <el-date-picker clearable
@@ -233,7 +207,7 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // order表格数据
+      // 订单表格数据
       orderList: [],
       // 弹出层标题
       title: "",
@@ -244,20 +218,23 @@ export default {
         pageNum: 1,
         pageSize: 10,
         orderNo: null,
-        status: null,
-        productCount: null,
-        totalPrice: null,
-        addressId: null,
-        userId: null,
         goodsId: null,
-        orderTime: null
+        status: null,
+        userId: null,
+        orderTime: null,
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
+        id: [
+          { required: true, message: "主键id不能为空", trigger: "blur" }
+        ],
         orderNo: [
           { required: true, message: "订单编号不能为空", trigger: "blur" }
+        ],
+        goodsId: [
+          { required: true, message: "商品id不能为空", trigger: "blur" }
         ],
       }
     };
@@ -266,7 +243,7 @@ export default {
     this.getList();
   },
   methods: {
-    /** 查询order列表 */
+    /** 查询订单列表 */
     getList() {
       this.loading = true;
       listOrder(this.queryParams).then(response => {
@@ -285,13 +262,14 @@ export default {
       this.form = {
         id: null,
         orderNo: null,
+        goodsId: null,
         status: 0,
         productCount: null,
         totalPrice: null,
         addressId: null,
         userId: null,
-        goodsId: null,
-        orderTime: null
+        orderTime: null,
+        reason: null
       };
       this.resetForm("form");
     },
@@ -315,7 +293,7 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加order";
+      this.title = "添加订单";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -324,7 +302,7 @@ export default {
       getOrder(id).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改order";
+        this.title = "修改订单";
       });
     },
     /** 提交按钮 */
@@ -350,7 +328,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除order编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除订单编号为"' + ids + '"的数据项？').then(function() {
         return delOrder(ids);
       }).then(() => {
         this.getList();

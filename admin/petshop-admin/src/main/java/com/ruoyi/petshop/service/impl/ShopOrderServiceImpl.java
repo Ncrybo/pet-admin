@@ -8,10 +8,10 @@ import com.ruoyi.petshop.domain.ShopOrder;
 import com.ruoyi.petshop.service.IShopOrderService;
 
 /**
- * orderService业务层处理
+ * 订单Service业务层处理
  * 
  * @author ruoyi
- * @date 2022-09-07
+ * @date 2022-09-15
  */
 @Service
 public class ShopOrderServiceImpl implements IShopOrderService 
@@ -20,10 +20,10 @@ public class ShopOrderServiceImpl implements IShopOrderService
     private ShopOrderMapper shopOrderMapper;
 
     /**
-     * 查询order
+     * 查询订单
      * 
-     * @param id order主键
-     * @return order
+     * @param id 订单主键
+     * @return 订单
      */
     @Override
     public ShopOrder selectShopOrderById(Long id)
@@ -32,10 +32,10 @@ public class ShopOrderServiceImpl implements IShopOrderService
     }
 
     /**
-     * 查询order列表
+     * 查询订单列表
      * 
-     * @param shopOrder order
-     * @return order
+     * @param shopOrder 订单
+     * @return 订单
      */
     @Override
     public List<ShopOrder> selectShopOrderList(ShopOrder shopOrder)
@@ -44,9 +44,9 @@ public class ShopOrderServiceImpl implements IShopOrderService
     }
 
     /**
-     * 新增order
+     * 新增订单
      * 
-     * @param shopOrder order
+     * @param shopOrder 订单
      * @return 结果
      */
     @Override
@@ -56,9 +56,9 @@ public class ShopOrderServiceImpl implements IShopOrderService
     }
 
     /**
-     * 修改order
+     * 修改订单
      * 
-     * @param shopOrder order
+     * @param shopOrder 订单
      * @return 结果
      */
     @Override
@@ -68,9 +68,9 @@ public class ShopOrderServiceImpl implements IShopOrderService
     }
 
     /**
-     * 批量删除order
+     * 批量删除订单
      * 
-     * @param ids 需要删除的order主键
+     * @param ids 需要删除的订单主键
      * @return 结果
      */
     @Override
@@ -80,9 +80,9 @@ public class ShopOrderServiceImpl implements IShopOrderService
     }
 
     /**
-     * 删除order信息
+     * 删除订单信息
      * 
-     * @param id order主键
+     * @param id 订单主键
      * @return 结果
      */
     @Override

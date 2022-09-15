@@ -4,55 +4,55 @@ import java.util.List;
 import com.ruoyi.petshop.domain.ShopOrder;
 
 /**
- * orderMapper接口
+ * 订单Mapper接口
  * 
  * @author ruoyi
- * @date 2022-09-07
+ * @date 2022-09-15
  */
 public interface ShopOrderMapper 
 {
     /**
-     * 查询order
+     * 查询订单
      * 
-     * @param id order主键
-     * @return order
+     * @param id 订单主键
+     * @return 订单
      */
     public ShopOrder selectShopOrderById(Long id);
 
     /**
-     * 查询order列表
+     * 查询订单列表
      * 
-     * @param shopOrder order
-     * @return order集合
+     * @param shopOrder 订单
+     * @return 订单集合
      */
     public List<ShopOrder> selectShopOrderList(ShopOrder shopOrder);
 
     /**
-     * 新增order
+     * 新增订单
      * 
-     * @param shopOrder order
+     * @param shopOrder 订单
      * @return 结果
      */
     public int insertShopOrder(ShopOrder shopOrder);
 
     /**
-     * 修改order
+     * 修改订单
      * 
-     * @param shopOrder order
+     * @param shopOrder 订单
      * @return 结果
      */
     public int updateShopOrder(ShopOrder shopOrder);
 
     /**
-     * 删除order
+     * 删除订单
      * 
-     * @param id order主键
+     * @param id 订单主键
      * @return 结果
      */
     public int deleteShopOrderById(Long id);
 
     /**
-     * 批量删除order
+     * 批量删除订单
      * 
      * @param ids 需要删除的数据主键集合
      * @return 结果

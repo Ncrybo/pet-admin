@@ -9,10 +9,10 @@ import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
- * order对象 shop_order
- *
+ * 订单对象 shop_order
+ * 
  * @author ruoyi
- * @date 2022-09-07
+ * @date 2022-09-15
  */
 public class ShopOrder extends BaseEntity
 {
@@ -25,16 +25,11 @@ public class ShopOrder extends BaseEntity
     @Excel(name = "订单编号")
     private String orderNo;
 
-    /** 订单状态：
- 0： 已下单（待支付）
- 1： 已支付（代发货）
- 2： 已发货（待收货）
- 3： 已收货（待评价）
- 4： 已评价
- -1：取消订单
--2：申请退单
--3：管理员审核通过
--4：管理员直接退单 */
+    /** 商品id */
+    @Excel(name = "商品id")
+    private Long goodsId;
+
+    /** 订单状态 */
     @Excel(name = "订单状态")
     private Long status;
 
@@ -42,107 +37,116 @@ public class ShopOrder extends BaseEntity
     @Excel(name = "商品数量")
     private Long productCount;
 
-    /** 总价 */
-    @Excel(name = "总价")
+    /** 商品总价 */
+    @Excel(name = "商品总价")
     private BigDecimal totalPrice;
 
     /** 收货地址 */
     @Excel(name = "收货地址")
-    private String addressId;
+    private Long addressId;
 
-    /** 下单用户ID */
-    @Excel(name = "下单用户ID")
+    /** 用户ID */
+    @Excel(name = "用户ID")
     private Long userId;
-
-    /** 下单商品id */
-    @Excel(name = "下单商品id")
-    private Long goodsId;
 
     /** 下单时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "下单时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date orderTime;
 
-    public void setId(Long id)
+    /** 退单理由 */
+    @Excel(name = "退单理由")
+    private String reason;
+
+    public void setId(Long id) 
     {
         this.id = id;
     }
 
-    public Long getId()
+    public Long getId() 
     {
         return id;
     }
-    public void setOrderNo(String orderNo)
+    public void setOrderNo(String orderNo) 
     {
         this.orderNo = orderNo;
     }
 
-    public String getOrderNo()
+    public String getOrderNo() 
     {
         return orderNo;
     }
-    public void setStatus(Long status)
-    {
-        this.status = status;
-    }
-
-    public Long getStatus()
-    {
-        return status;
-    }
-    public void setProductCount(Long productCount)
-    {
-        this.productCount = productCount;
-    }
-
-    public Long getProductCount()
-    {
-        return productCount;
-    }
-    public void setTotalPrice(BigDecimal totalPrice)
-    {
-        this.totalPrice = totalPrice;
-    }
-
-    public BigDecimal getTotalPrice()
-    {
-        return totalPrice;
-    }
-    public void setAddressId(String addressId)
-    {
-        this.addressId = addressId;
-    }
-
-    public String getAddressId()
-    {
-        return addressId;
-    }
-    public void setUserId(Long userId)
-    {
-        this.userId = userId;
-    }
-
-    public Long getUserId()
-    {
-        return userId;
-    }
-    public void setGoodsId(Long goodsId)
+    public void setGoodsId(Long goodsId) 
     {
         this.goodsId = goodsId;
     }
 
-    public Long getGoodsId()
+    public Long getGoodsId() 
     {
         return goodsId;
     }
-    public void setOrderTime(Date orderTime)
+    public void setStatus(Long status) 
+    {
+        this.status = status;
+    }
+
+    public Long getStatus() 
+    {
+        return status;
+    }
+    public void setProductCount(Long productCount) 
+    {
+        this.productCount = productCount;
+    }
+
+    public Long getProductCount() 
+    {
+        return productCount;
+    }
+    public void setTotalPrice(BigDecimal totalPrice) 
+    {
+        this.totalPrice = totalPrice;
+    }
+
+    public BigDecimal getTotalPrice() 
+    {
+        return totalPrice;
+    }
+    public void setAddressId(Long addressId) 
+    {
+        this.addressId = addressId;
+    }
+
+    public Long getAddressId() 
+    {
+        return addressId;
+    }
+    public void setUserId(Long userId) 
+    {
+        this.userId = userId;
+    }
+
+    public Long getUserId() 
+    {
+        return userId;
+    }
+    public void setOrderTime(Date orderTime) 
     {
         this.orderTime = orderTime;
     }
 
-    public Date getOrderTime()
+    public Date getOrderTime() 
     {
         return orderTime;
+    }
+    public void setReason(String reason) 
+    {
+        this.reason = reason;
+    }
+
+    public String getReason() 
+    {
+        return reason;
     }
 
     @Override
@@ -150,13 +154,14 @@ public class ShopOrder extends BaseEntity
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
             .append("orderNo", getOrderNo())
+            .append("goodsId", getGoodsId())
             .append("status", getStatus())
             .append("productCount", getProductCount())
             .append("totalPrice", getTotalPrice())
             .append("addressId", getAddressId())
             .append("userId", getUserId())
-            .append("goodsId", getGoodsId())
             .append("orderTime", getOrderTime())
+            .append("reason", getReason())
             .toString();
     }
 }
